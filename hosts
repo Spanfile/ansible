@@ -8,7 +8,7 @@ dhcp.int.spans.me
 psql1.int.spans.me
 psql2.int.spans.me
 10.0.250.1
-10.0.250.4
+#10.0.250.4
 10.0.250.11
 10.0.250.12
 
