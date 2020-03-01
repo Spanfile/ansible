@@ -1,0 +1,16 @@
+[all]
+ntp1.int.spans.me
+ntp2.int.spans.me
+10.0.20.4
+nginx.int.spans.me
+aptcacher.int.spans.me
+dhcp.int.spans.me
+psql1.int.spans.me
+psql2.int.spans.me
+10.0.250.1
+10.0.250.4
+10.0.250.11
+10.0.250.12
+
+[all:vars]
+ansible_python_interpreter = /usr/bin/python3
