@@ -7,10 +7,12 @@
       lineinfile:
         path: /etc/systemd/resolved.conf
         line: "DNSStubListener=no"
+      register: stub
     - name: Restart systemd-resolve
       systemd:
         name: systemd-resolved
         state: restarted
+      when: stub.changed
     - name: Link resolv.conf to systemd-resolve
       file:
         path: /etc/resolv.conf
