@@ -1,0 +1,18 @@
+---
+- hosts: all
+  become: true
+
+  tasks:
+    - name: Disable systemd-resolve stub listener
+      lineinfile:
+        path: /etc/systemd/resolved.conf
+        line: "DNSStubListener=no"
+    - name: Restart systemd-resolve
+      systemd:
+        name: systemd-resolved
+        state: restarted
+    - name: Link resolv.conf to systemd-resolve
+      file:
+        path: /etc/resolv.conf
+        src: /run/systemd/resolve/resolv.conf
+        state: link
