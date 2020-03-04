@@ -11,7 +11,9 @@ psql2.int.spans.me
 #10.0.250.4
 10.0.250.11
 10.0.250.12
+ns1.int.spans.me
+ns2.int.spans.me
+dashboard.int.spans.me
 
 [all:vars]
 ansible_python_interpreter = /usr/bin/python3
-ansible_user = ansible

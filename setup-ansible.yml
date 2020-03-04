@@ -15,9 +15,3 @@
       authorized_key: user=ansible
         key="{{ lookup('file', './id_ecdsa.pub') }}"
         state=present
-    - name: Install Python 3 pip
-      apt:
-        name: python3-pip
-    - name: Install Python 3 APT pip-package
-      pip:
-        name: python3-pip
