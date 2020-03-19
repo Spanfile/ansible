@@ -13,6 +13,8 @@ lab-r2.int.spans.me
 ns1.int.spans.me
 ns2.int.spans.me
 dashboard.int.spans.me
+ghost.int.spans.me
+factorio.int.spans.me
 
 [all:vars]
 ansible_python_interpreter = /usr/bin/python3
