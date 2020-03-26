@@ -1,10 +1,7 @@
 ---
 - hosts: all
-  become: true
+  become: yes
 
   tasks:
-    - name: Update packages
-      apt:
-        update_cache: yes
-        upgrade: safe
-        autoremove: yes
+    - include_role:
+        name: update

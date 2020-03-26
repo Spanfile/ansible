@@ -1,0 +1,10 @@
+- name: Copy configuration file
+  copy:
+    src: telegraf.conf
+    dest: /etc/telegraf/telegraf.conf
+  register: config_copied
+- name: Restart Telegraf systemd service
+  systemd:
+    name: telegraf
+    state: restarted
+  when: config_copied.changed

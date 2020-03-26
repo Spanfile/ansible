@@ -1,0 +1,4 @@
+- name: Ansible prequisites
+  include_tasks: setup-ansible.yml
+- name: resolv.conf
+  include_tasks: resolv-conf.yml

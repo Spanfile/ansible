@@ -1,0 +1,16 @@
+- name: Install prerequirements
+  apt:
+    update_cache: yes
+    name:
+      - apt-transport-https
+      - gpg
+- name: Add InfluxData apt signing key
+  apt_key:
+    url: https://repos.influxdata.com/influxdb.key
+- name: Add InfluxData apt package repository
+  apt_repository:
+    repo: deb https://repos.influxdata.com/debian buster stable
+- name: Install Telegraf
+  apt:
+    update_cache: yes
+    name: telegraf

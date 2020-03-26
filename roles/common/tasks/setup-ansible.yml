@@ -1,0 +1,15 @@
+- name: Add Ansible user
+  remote_user: santeri
+  user:
+    name: ansible
+- name: Add Ansible user to sudoers
+  remote_user: santeri
+  copy:
+    dest: "/etc/sudoers.d/ansible"
+    content: "ansible  ALL=(ALL)  NOPASSWD: ALL"
+- name: Deploy SSH key
+  remote_user: santeri
+  authorized_key:
+    user: ansible
+    key: "{{ lookup('file', 'id_ecdsa.pub') }}"
+    state: present
