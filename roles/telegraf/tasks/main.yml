@@ -1,5 +1,4 @@
-- name: Setup Telegraf
-  include_tasks: setup.yml
-  when: not onlyconf
-- name: Telegraf configuration
-  include_tasks: config.yml
+- import_tasks: setup.yml
+  tags: setup
+- import_tasks: config.yml
+  tags: config
