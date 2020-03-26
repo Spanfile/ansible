@@ -1,0 +1,4 @@
+---
+services:
+  - name: apt-cacher-ng
+    package: apt-cacher-ng
