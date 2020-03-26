@@ -1,0 +1,4 @@
+---
+services:
+  - name: docker
+    package: docker-ce

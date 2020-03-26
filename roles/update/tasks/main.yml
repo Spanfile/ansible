@@ -3,3 +3,13 @@
     update_cache: yes
     upgrade: safe
     autoremove: yes
+  register: upgrades
+- name: Show upgraded packages
+  debug:
+    msg: "{{ upgrades }}"
+  when: upgrades.changed
+- name: Restart affected services
+  debug:
+    msg: "{{ item.name }}"
+  with_items: "{{ services }}"
+  # when: upgrades.changed
