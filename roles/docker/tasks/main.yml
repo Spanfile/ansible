@@ -1,0 +1,28 @@
+- name: Install prerequisites
+  apt:
+    update_cache: yes
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg2
+      - software-properties-common
+- name: Add Docker apt signing key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+- name: Add Docker apt package repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/debian buster stable
+- name: Install Docker
+  apt:
+    update_cache: yes
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+- name: Allow admin user non-root access to Docker
+  user:
+    name: santeri
+    append: yes
+    groups:
+      - docker

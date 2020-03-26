@@ -1,4 +1,4 @@
-- name: Install prerequirements
+- name: Install prerequisites
   apt:
     update_cache: yes
     name:
