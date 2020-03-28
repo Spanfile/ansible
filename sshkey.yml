@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: Set admin user authorized keys
+      authorized_key:
+        exclusive: yes
+        user: santeri
+        key: "{{ lookup('file', 'files/pubkeys') }}"

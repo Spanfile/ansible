@@ -3,5 +3,21 @@
   become: yes
 
   tasks:
-    - import_role:
-        name: update
+    - name: Update packages
+      apt:
+        update_cache: yes
+        upgrade: safe
+        autoremove: yes
+      register: update
+    - name: Retrieve upgraded packages
+      shell: grep -E "^$(date +%Y-%m-%d).+ (install|upgrade) " /var/log/dpkg.log | cut -d " " -f 4 | cut -d ":" -f 1 | sort | uniq
+      register: upgrades
+    # - name: Display upgraded packages
+    #   debug:
+    #     msg: "{{ upgrades }}"
+    - name: Restart affected services
+      systemd:
+        name: "{{ item.name }}"
+        state: restarted
+      loop: "{{ services }}"
+      when: item.package in upgrades.stdout_lines
