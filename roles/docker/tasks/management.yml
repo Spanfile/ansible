@@ -1,0 +1,11 @@
+- name: Allow admin user non-root access to Docker
+  user:
+    name: santeri
+    append: yes
+    groups:
+      - docker
+- name: Install docker-compose and Docker Python libraries
+  pip:
+    name:
+      - docker-compose
+      - docker

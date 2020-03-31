@@ -1,0 +1,4 @@
+- name: Pull latest container images and recreate services
+  docker_compose:
+    project_src: "/home/santeri/{{ service_location }}"
+    pull: yes
