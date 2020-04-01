@@ -1,4 +1,3 @@
 ---
 services:
-  - name: docker
-    package: docker-ce
+  docker: docker-ce

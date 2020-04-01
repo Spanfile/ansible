@@ -1,4 +1,3 @@
 ---
 services:
-  - name: ntp
-    package: ntp
+  ntp: ntp

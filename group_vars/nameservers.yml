@@ -1,6 +1,4 @@
 ---
 services:
-  - name: pdns
-    package: pdns
-  - name: pdns-recursor
-    package: pdns-recursor
+  pdns: pdns
+  pdns-recursor: pdns-recursor

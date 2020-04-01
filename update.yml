@@ -3,8 +3,29 @@
   become: yes
 
   tasks:
-    - import_tasks: update_packages.yml
+    - block:
+        - name: Update packages
+          apt:
+            update_cache: yes
+            upgrade: safe
+            autoremove: yes
+          register: update
+        - name: Retrieve upgraded packages
+          shell: grep -E "^$(date +%Y-%m-%d).+ (install|upgrade) " /var/log/dpkg.log | cut -d " " -f 4 | cut -d ":" -f 1 | sort | uniq
+          register: upgrades
+        # - name: Display upgraded packages
+        #   debug:
+        #     msg: "{{ upgrades }}"
+        - name: Restart affected services
+          systemd:
+            name: "{{ item.value }}"
+            state: restarted
+          loop: "{{ services | dict2items }}"
+          when: item.key in upgrades.stdout_lines
       tags: packages
-    - import_tasks: update_docker_services.yml
+    - name: Pull latest container images and recreate services
+      docker_compose:
+        project_src: "/home/santeri/{{ service_location }}"
+        pull: yes
       tags: docker
       when: "'docker' in group_names"
