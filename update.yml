@@ -18,10 +18,10 @@
         #     msg: "{{ upgrades }}"
         - name: Restart affected services
           systemd:
-            name: "{{ item.value }}"
+            name: "{{ item.service }}"
             state: restarted
-          loop: "{{ services | dict2items }}"
-          when: item.key in upgrades.stdout_lines
+          loop: "{{ services | dict2items(key_name='package', value_name='service') }}"
+          when: item.package in upgrades.stdout_lines
       tags: packages
     - name: Pull latest container images and recreate services
       docker_compose:
