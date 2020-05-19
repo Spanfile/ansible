@@ -1,0 +1,36 @@
+---
+- hosts: all
+  become: yes
+  remote_user: pi
+  vars_prompt:
+    name: admin_pass
+    prompt: "Admin pass"
+    encrypt: sha512_crypt
+    confirm: yes
+    salt_size: 7
+
+  tasks:
+    - name: Set hostname
+      hostname:
+        use: systemd
+        name: "{{ hostname }}"
+    - name: Remove old hosts entry
+      lineinfile:
+        path: /etc/hosts
+        line: "127.0.1.1\t\traspberrypi"
+        state: absent
+    - name: Add new hosts entry
+      lineinfile:
+        path: /etc/hosts
+        line: "127.0.1.1 {{ hostname }}"
+    - name: Change admin user password
+      user:
+        name: pi
+        password: "{{ admin_pass }}"
+    - name: Enable SSH daemon
+      systemd:
+        name: ssh
+        state: started
+        enabled: yes
+    - import_role:
+        name: common
