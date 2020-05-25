@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: pis
   become: yes
   remote_user: pi
   vars_prompt:
@@ -27,10 +27,7 @@
       user:
         name: pi
         password: "{{ admin_pass }}"
-    - name: Enable SSH daemon
-      systemd:
-        name: ssh
-        state: started
-        enabled: yes
     - import_role:
         name: common
+    - import_role:
+        name: sshd

@@ -11,9 +11,9 @@
 - name: Add Docker apt signing key
   apt_key:
     url: https://download.docker.com/linux/debian/gpg
-- name: Add Docker apt package repository
+- name: Add Debian Docker apt package repository
   apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/debian buster stable
+    repo: deb https://download.docker.com/linux/{{ distro }} buster stable
 - name: Install Docker
   apt:
     update_cache: yes

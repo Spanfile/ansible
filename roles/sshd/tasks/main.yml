@@ -1,0 +1,9 @@
+- name: Copy sshd_config
+  copy:
+    dest: "/etc/ssh/sshd_config"
+    src: sshd_config
+- name: Restart sshd
+  systemd:
+    name: sshd
+    state: restarted
+    enabled: yes
