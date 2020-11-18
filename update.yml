@@ -4,7 +4,7 @@
 
   tasks:
     - block:
-        - name: Update packages
+        - name: Update apt packages
           apt:
             update_cache: yes
             upgrade: safe
@@ -23,6 +23,17 @@
           loop: "{{ services | dict2items(key_name='package', value_name='service') }}"
           when: item.package in upgrades.stdout_lines
       tags: packages
+      when: ansible_facts['os_family'] == "Debian"
+    - block:
+        - name: Update dnf packages
+          dnf:
+            name: "*"
+            update_cache: yes
+            state: latest
+        - name: Remove unneeded packages
+          dnf:
+            autoremove: yes
+      when: ansible_facts['os_family'] == "RedHat"
     - name: Pull latest container images and recreate services
       docker_compose:
         project_src: "/home/santeri/{{ service_location }}"

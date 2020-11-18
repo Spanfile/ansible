@@ -1,0 +1,18 @@
+- name: Install monitoring plugins
+  apt:
+    name: monitoring-plugins-basic
+    update_cache: yes
+  when: ansible_facts['os_family'] == "Debian"
+- name: Install check_mem plugin
+  get_url:
+    url: https://exchange.nagios.org/components/com_mtree/attachment.php?link_id=4174&cf_id=24
+    dest: /usr/lib/nagios/plugins/check_mem
+    mode: 0755
+- name: Add Icinga user
+  user:
+    name: icinga
+- name: Deploy Icinga SSH key
+  authorized_key:
+    user: icinga
+    key: "{{ lookup('file', 'id_ecdsa.pub') }}"
+    state: present
