@@ -1,5 +1,4 @@
 ---
-distro: raspbian
 services:
   dnsdist: dnsdist
   pdns-recursor: pdns-recursor
