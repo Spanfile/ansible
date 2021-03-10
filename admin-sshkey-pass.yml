@@ -13,6 +13,8 @@
         exclusive: yes
         user: "{{ admin_user }}"
         key: "{{ lookup('file', 'files/pubkeys') }}"
+      tags:
+      - always
     - name: Set admin user password
       user:
         name: "{{ admin_user }}"

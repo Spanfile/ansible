@@ -3,26 +3,11 @@
   become: yes
 
   tasks:
-    - block:
-        - name: Update apt packages
-          apt:
-            update_cache: yes
-            upgrade: safe
-            autoremove: yes
-          register: update
-        - name: Retrieve upgraded packages
-          shell: grep -E "^$(date +%Y-%m-%d).+ (install|upgrade) " /var/log/dpkg.log | cut -d " " -f 4 | cut -d ":" -f 1 | sort | uniq
-          register: upgrades
-        # - name: Display upgraded packages
-        #   debug:
-        #     msg: "{{ upgrades }}"
-        - name: Restart affected services
-          systemd:
-            name: "{{ item.service }}"
-            state: restarted
-          loop: "{{ services | dict2items(key_name='package', value_name='service') }}"
-          when: item.package in upgrades.stdout_lines
-      tags: packages
+    - name: Update apt packages
+      apt:
+        update_cache: yes
+        upgrade: full
+        autoremove: yes
       when: ansible_facts['os_family'] == "Debian"
     - block:
         - name: Update dnf packages
@@ -34,9 +19,3 @@
           dnf:
             autoremove: yes
       when: ansible_facts['os_family'] == "RedHat"
-    - name: Pull latest container images and recreate services
-      docker_compose:
-        project_src: "/home/santeri/{{ service_location }}"
-        pull: yes
-      tags: docker
-      when: "'docker' in group_names"
