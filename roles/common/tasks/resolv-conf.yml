@@ -13,3 +13,4 @@
     path: /etc/resolv.conf
     src: /run/systemd/resolve/resolv.conf
     state: link
+  when: stub.changed
