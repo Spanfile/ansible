@@ -13,7 +13,13 @@
     src: /usr/lib64/nagios
     state: link
 - name: Install check_mem plugin
-  get_url:
-    url: https://exchange.nagios.org/components/com_mtree/attachment.php?link_id=4174&cf_id=24
+  copy:
+    src: check_mem
     dest: /usr/lib64/nagios/plugins/check_mem
     mode: 0755
+- name: Allow Icinga user to run certain plugins with sudo
+  copy:
+    dest: "/etc/sudoers.d/icinga"
+    content: "icinga ALL=(ALL) NOPASSWD: /usr/lib64/nagios/plugins/check_updates\n"
+    validate: visudo -cf %s
+

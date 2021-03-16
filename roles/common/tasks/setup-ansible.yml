@@ -5,6 +5,7 @@
   copy:
     dest: "/etc/sudoers.d/ansible"
     content: "ansible  ALL=(ALL)  NOPASSWD: ALL"
+    validate: visudo -cf %s
 - name: Deploy SSH key
   authorized_key:
     user: ansible
