@@ -5,6 +5,16 @@
   include_tasks: rhel.yml
   when: ansible_facts['os_family'] == "RedHat"
 
+- name: Install check_systemd plugin
+  pip:
+    name: check_systemd
+    state: latest
+- name: Symlink check_systemd plugin to plugin directory
+  file:
+    path: /usr/lib/nagios/plugins/check_systemd
+    src: /usr/local/bin/check_systemd
+    state: link
+
 - name: Add Icinga user
   user:
     name: icinga

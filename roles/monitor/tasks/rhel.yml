@@ -1,6 +1,8 @@
 - name: Install prerequisites
   dnf:
-    name: "epel-release"
+    name:
+      - epel-release
+      - python3-pip
     update_cache: yes
     state: latest
 - name: Install monitoring plugins
