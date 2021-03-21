@@ -5,6 +5,11 @@
       - python3-pip
     update_cache: yes
     state: latest
+- name: Enable PowerTools repository
+  lineinfile:
+    path: /etc/yum.repos.d/CentOS-Linux-PowerTools.repo
+    regexp: '^enabled='
+    line: enabled=1
 - name: Install monitoring plugins
   dnf:
     name: "nagios-plugins*"
