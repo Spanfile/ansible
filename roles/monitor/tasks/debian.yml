@@ -6,11 +6,6 @@
   apt:
     name: monitoring-plugins-basic
     update_cache: yes
-- name: Install check_mem plugin
-  copy:
-    src: check_mem
-    dest: /usr/lib/nagios/plugins/check_mem
-    mode: 0755
 - name: Allow Icinga user to run certain plugins with sudo
   copy:
     dest: "/etc/sudoers.d/icinga"

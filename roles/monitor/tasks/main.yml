@@ -5,6 +5,11 @@
   include_tasks: rhel.yml
   when: ansible_facts['os_family'] == "RedHat"
 
+- name: Install check_mem plugin
+  copy:
+    src: check_mem
+    dest: /usr/lib/nagios/plugins/check_mem
+    mode: 0755
 - name: Install check_systemd plugin
   pip:
     name: check_systemd

@@ -5,11 +5,20 @@
       - python3-pip
     update_cache: yes
     state: latest
-- name: Enable PowerTools repository
+
+- name: Enable PowerTools repository for CentOS
   lineinfile:
     path: /etc/yum.repos.d/CentOS-Linux-PowerTools.repo
     regexp: '^enabled='
     line: enabled=1
+  when: ansible_facts['distribution'] == "CentOS"
+- name: Enable PowerTools repository for AlmaLinux
+  lineinfile:
+    path: /etc/yum.repos.d/almalinux.repo
+    regexp: '^enabled='
+    line: enabled=1
+  when: ansible_facts['distribution'] == "AlmaLinux"
+
 - name: Install monitoring plugins
   dnf:
     name: "nagios-plugins*"
@@ -19,11 +28,6 @@
     path: /usr/lib/nagios
     src: /usr/lib64/nagios
     state: link
-- name: Install check_mem plugin
-  copy:
-    src: check_mem
-    dest: /usr/lib64/nagios/plugins/check_mem
-    mode: 0755
 - name: Allow Icinga user to run certain plugins with sudo
   copy:
     dest: "/etc/sudoers.d/icinga"
