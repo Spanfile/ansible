@@ -33,4 +33,3 @@
     dest: "/etc/sudoers.d/icinga"
     content: "icinga ALL=(ALL) NOPASSWD: /usr/lib64/nagios/plugins/check_updates\n"
     validate: visudo -cf %s
-
