@@ -3,6 +3,7 @@
     name:
       - epel-release
       - python3-pip
+      - patch
     update_cache: yes
     state: latest
 

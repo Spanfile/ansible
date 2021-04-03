@@ -1,0 +1,12 @@
+--- check_updates	2021-04-03 12:41:13.546649141 +0300
++++ check_updates_patched	2021-04-03 12:26:28.987729455 +0300
+@@ -1007,7 +1007,8 @@
+         || $name =~ /Red[ ]Hat.*release[ ][56789]/mxs
+         || $name =~ /Oracle/mxs
+         || $name =~ /Amazon/mxs
+-        || $name =~ /Sangoma/mxs )
++        || $name =~ /Sangoma/mxs
++        || $name =~ /AlmaLinux/mxs )
+     {
+         return 'yum';
+     }
