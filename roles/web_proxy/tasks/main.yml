@@ -2,21 +2,25 @@
   copy:
     dest: "/etc/haproxy/haproxy.cfg"
     src: haproxy.cfg
+  register: haproxy
 - name: Copy keepalived master config
   copy:
     dest: /etc/keepalived/keepalived.conf
     src: keepalived.master.conf
   when: role == "master"
+  register: keepalived
 - name: Copy keepalived backup config
   copy:
     dest: /etc/keepalived/keepalived.conf
     src: keepalived.backup.conf
   when: role == "backup"
-- name: Restart haproxy
+- name: Reload haproxy
   systemd:
     name: haproxy
-    state: restarted
-- name: Restart keepalived
+    state: reloaded
+  when: haproxy.changed
+- name: Reload keepalived
   systemd:
     name: keepalived
-    state: restarted
+    state: reloaded
+  when: keepalived.changed
