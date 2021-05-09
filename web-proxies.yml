@@ -3,5 +3,23 @@
   become: yes
 
   tasks:
-    - import_role:
-        name: web_proxy
+  - name: Copy haproxy config
+    copy:
+      dest: "/etc/haproxy/haproxy.cfg"
+      src: haproxy.cfg
+    register: haproxy
+  - name: Reload haproxy
+    systemd:
+      name: haproxy
+      state: reloaded
+    when: haproxy.changed
+  - name: Copy keepalived config
+    copy:
+      dest: /etc/keepalived/keepalived.conf
+      src: keepalived.{{role}}.conf
+    register: keepalived
+  - name: Restart keepalived
+    systemd:
+      name: keepalived
+      state: restarted
+    when: keepalived.changed

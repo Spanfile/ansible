@@ -1,0 +1,33 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+  - name: Install htop for Debian
+    apt:
+      name: htop
+      update_cache: yes
+    when: ansible_facts['os_family'] == "Debian"
+  - name: Install htop for RH
+    block:
+    - name: Install epel-release
+      yum:
+        name: epel-release
+        state: latest
+    - name: Install htop
+      yum:
+        name: htop
+        state: latest
+    when: ansible_facts['os_family'] == "RedHat"
+  - name: Create htop config directory
+    file:
+      state: directory
+      path: "/home/{{ admin_user }}/.config/htop"
+      recurse: yes
+      owner: "{{ admin_user }}"
+      mode: 0700
+  - name: Copy htoprc
+    copy:
+      dest: "/home/{{ admin_user }}/.config/htop/htoprc"
+      src: htoprc
+      mode: 0600

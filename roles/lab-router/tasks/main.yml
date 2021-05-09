@@ -1,7 +1,0 @@
-- name: Copy nftables config
-  copy:
-    dest: "/etc/sysconfig/nftables.conf"
-    src: nftables.conf
-    validate: nft -cf %s
-- name: Apply config
-  command: nft -f /etc/sysconfig/nftables.conf

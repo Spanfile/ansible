@@ -1,7 +1,35 @@
 ---
 - hosts: all
+  remote_user: "{{ admin_user }}"
   become: yes
 
   tasks:
-    - import_role:
-        name: common
+  - name: Add Ansible user
+    user:
+      name: ansible
+  - name: Add Ansible user to sudoers
+    copy:
+      dest: "/etc/sudoers.d/ansible"
+      content: "ansible  ALL=(ALL)  NOPASSWD: ALL"
+      validate: visudo -cf %s
+  - name: Deploy SSH key
+    authorized_key:
+      user: ansible
+      key: "{{ lookup('file', 'id_ecdsa.pub') }}"
+      state: present
+  - name: Disable systemd-resolve stub listener
+    lineinfile:
+      path: /etc/systemd/resolved.conf
+      line: "DNSStubListener=no"
+    register: stub
+  - name: Restart systemd-resolve
+    systemd:
+      name: systemd-resolved
+      state: restarted
+    when: stub.changed
+  - name: Link resolv.conf to systemd-resolve
+    file:
+      path: /etc/resolv.conf
+      src: /run/systemd/resolve/resolv.conf
+      state: link
+    when: stub.changed

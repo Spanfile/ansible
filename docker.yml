@@ -3,5 +3,37 @@
   become: yes
 
   tasks:
-    - import_role:
-        name: docker
+  - name: Install prerequisites
+    apt:
+      update_cache: yes
+      name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg2
+      - software-properties-common
+      - python3-pip
+  - name: Add Docker apt signing key
+    apt_key:
+      url: https://download.docker.com/linux/debian/gpg
+  - name: Add Debian Docker apt package repository
+    apt_repository:
+      repo: deb https://download.docker.com/linux/{{ distro }} buster stable
+  - name: Install Docker
+    apt:
+      update_cache: yes
+      name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+  - name: Allow admin user non-root access to Docker
+    user:
+      name: "{{ admin_user }}"
+      append: yes
+      groups:
+      - docker
+  - name: Install docker-compose and Docker Python libraries
+    pip:
+      name:
+      - docker-compose
+      - docker

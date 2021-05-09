@@ -3,5 +3,29 @@
   become: yes
 
   tasks:
-    - import_role:
-        name: telegraf
+  - name: Install prerequisites
+    apt:
+      update_cache: yes
+      name:
+        - apt-transport-https
+        - gpg
+  - name: Add InfluxData apt signing key
+    apt_key:
+      url: https://repos.influxdata.com/influxdb.key
+  - name: Add InfluxData apt package repository
+    apt_repository:
+      repo: deb https://repos.influxdata.com/debian buster stable
+  - name: Install Telegraf
+    apt:
+      update_cache: yes
+      name: telegraf
+  - name: Copy configuration file
+    copy:
+      src: telegraf.conf
+      dest: /etc/telegraf/telegraf.conf
+    register: config_copied
+  - name: Restart Telegraf systemd service
+    systemd:
+      name: telegraf
+      state: restarted
+    when: config_copied.changed

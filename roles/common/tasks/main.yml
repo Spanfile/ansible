@@ -1,4 +1,0 @@
-- name: Ansible prequisites
-  import_tasks: setup-ansible.yml
-- name: resolv.conf
-  import_tasks: resolv-conf.yml

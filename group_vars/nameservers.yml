@@ -1,4 +1,0 @@
----
-services:
-  pdns: pdns
-  pdns-recursor: pdns-recursor
