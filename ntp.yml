@@ -1,0 +1,15 @@
+---
+- hosts: lab:!timeservers
+  become: yes
+
+  tasks:
+    - block:
+      - name: Apply chronyd client configuration
+        copy:
+          dest: "/etc/chrony.conf"
+          src: chrony-client.conf
+      - name: Restart chronyd
+        systemd:
+          name: chronyd
+          state: restarted
+      when: ansible_facts['os_family'] == "RedHat"

@@ -8,6 +8,6 @@
     update_cache: yes
 - name: Allow Icinga user to run certain plugins with sudo
   copy:
-    dest: "/etc/sudoers.d/icinga"
-    content: "icinga ALL=(ALL) NOPASSWD: /usr/lib/nagios/plugins/check_apt\n"
+    dest: "/etc/sudoers.d/monitor"
+    content: "monitor ALL=(ALL) NOPASSWD: /usr/lib/nagios/plugins/check_apt\n"
     validate: "visudo -cf %s"

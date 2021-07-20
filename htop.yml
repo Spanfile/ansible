@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: all:!nas.int.spans.me
   become: yes
 
   tasks:

@@ -1,3 +1,20 @@
+- name: Attempt to remove old monitoring user
+  user:
+    name: icinga
+    state: absent
+    remove: yes
+  ignore_errors: yes
+  when: inventory_hostname != 'monitor.int.spans.me'
+- name: Add monitoring user
+  user:
+    name: monitor
+    system: yes
+- name: Deploy monitoring SSH key
+  authorized_key:
+    user: monitor
+    key: "{{ lookup('file', 'id_ecdsa.pub') }}"
+    state: present
+
 - name: Set up Debian monitoring
   include_tasks: debian.yml
   when: ansible_facts['os_family'] == "Debian"
@@ -24,12 +41,3 @@
     path: /usr/lib/nagios/plugins/check_systemd
     src: /usr/local/bin/check_systemd
     state: link
-
-- name: Add Icinga user
-  user:
-    name: icinga
-- name: Deploy Icinga SSH key
-  authorized_key:
-    user: icinga
-    key: "{{ lookup('file', 'id_ecdsa.pub') }}"
-    state: present
