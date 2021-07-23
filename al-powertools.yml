@@ -1,0 +1,13 @@
+---
+- hosts: lab
+  become: yes
+
+  tasks:
+    - block:
+        - name: Install DNF config manager plugin
+          dnf:
+            name: dnf-plugins-core
+            state: present
+        - name: Enable PowerTools repository
+          command: dnf config-manager --set-enabled powertools
+      when: ansible_facts['distribution'] == "AlmaLinux"

@@ -4,26 +4,25 @@
       - epel-release
       - python3-pip
       - patch
+      - dnf-plugins-core
     update_cache: yes
     state: latest
-
-- name: Enable PowerTools repository for CentOS
-  lineinfile:
-    path: /etc/yum.repos.d/CentOS-Linux-PowerTools.repo
-    regexp: '^enabled='
-    line: enabled=1
-  when: ansible_facts['distribution'] == "CentOS"
-- name: Enable PowerTools repository for AlmaLinux
-  lineinfile:
-    path: /etc/yum.repos.d/almalinux-powertools.repo
-    regexp: '^enabled='
-    line: enabled=1
-  when: ansible_facts['distribution'] == "AlmaLinux"
-
+- name: Enable PowerTools repository
+  command: dnf config-manager --set-enabled powertools
 - name: Install monitoring plugins
   dnf:
     name: "nagios-plugins*"
     state: latest
+
+# nagios-plugins-* ends up installing the sensors plugin, which in turn pulls in lm_sensors. it obviously doesn't work
+# in a VM so stop and disable it to avoid any issues with the service failing
+- name: Disable sensors
+  systemd:
+    name: lm_sensors
+    state: stopped
+    enabled: no
+  when: inventory_hostname != 'nas.int.spans.me' # the nas ofc needs it though
+  
 - name: Create Nagios library symlink
   file:
     path: /usr/lib/nagios
